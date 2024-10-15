@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黑名单联系人</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>黑名单联系人</h1>
+
+    <!-- 返回按钮 -->
+    <button onclick="location.href='/'">返回通讯录</button>
+
+    <!-- 黑名单表格 -->
+    <table>
+        <thead>
+            <tr>
+                <th>姓名</th>
+                <th>电话</th>
+                <th>学号</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody id="blacklist-list">
+            {% for contact in contacts %}
+            <tr class="contact" id="contact-{{ contact.id }}">
+                <td>{{ contact.name }}</td>
+                <td>{{ contact.phone }}</td>
+                <td>{{ contact.student_id }}</td>
+                <td>
+                    <button onclick="toggleBlacklist({{ contact.id }})">移出黑名单</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

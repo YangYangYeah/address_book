@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通讯录管理系统</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>通讯录</h1>
+
+    <!-- 添加联系人表单 -->
+    <form id="add-contact-form">
+        <label for="name">姓名:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="phone">电话:</label>
+        <input type="text" id="phone" name="phone" required>
+
+        <label for="student_id">学号:</label>
+        <input type="text" id="student_id" name="student_id" required>
+
+        <button type="submit">添加联系人</button>
+    </form>
+
+    <!-- 黑名单按钮 -->
+    <button onclick="location.href='/blacklist_contacts'">查看黑名单</button>
+
+    <!-- 通讯录表格 -->
+    <table>
+        <thead>
+            <tr>
+                <th>姓名</th>
+                <th>电话</th>
+                <th>学号</th>
+                <th>特别关心</th>
+                <th>黑名单</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody id="contact-list">
+            {% for contact in contacts %}
+            <tr class="contact">
+                <!-- 如果是特别关心，添加 special-care 类以将姓名显示为粉色 -->
+                <td class="{{ 'special-care' if contact.special_care else '' }}">{{ contact.name }}</td>
+                <td>{{ contact.phone }}</td>
+                <td>{{ contact.student_id }}</td>
+                <td>{{ '是' if contact.special_care else '否' }}</td>
+                <td>{{ '是' if contact.blacklist else '否' }}</td>
+                <td>
+                    <div class="action-buttons">
+                        <button onclick="deleteContact({{ contact.id }})">删除</button>
+                        <button onclick="toggleSpecialCare({{ contact.id }})">
+    {% if contact.special_care %}
+        取消特别关心
+    {% else %}
+        特别关心
+    {% endif %}
+</button>
+
+                        <button onclick="toggleBlacklist({{ contact.id }})">黑名单</button>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
